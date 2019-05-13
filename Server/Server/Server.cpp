@@ -14,6 +14,29 @@ using namespace std;
 #define BUFSIZE     1024 
 #define SERVER_PORT 54000
 
+list<string> clientList;
+
+string connectMail(string mail)
+{
+    clientList.push_back(mail);
+    return "Connect";
+}
+
+string onlineListShow(string selfMail)
+{
+    string onlineMails = "";
+
+    for (string m : clientList)
+    {
+        if (m != selfMail)
+        {
+            onlineMails += m + '|';
+        }
+    }
+
+    return onlineMails;
+}
+
 int main(void)
 {
     WSAData data;
@@ -69,8 +92,6 @@ int main(void)
 
     char buf[BUFSIZE];
 
-    list<string> clientList;
-
     while (true)
     {
         ZeroMemory(buf, BUFSIZE);
@@ -84,37 +105,43 @@ int main(void)
 
         string bufByString = string(buf);
 
-        string mail = bufByString.substr(0, bufByString.find('|'));
+        string com = bufByString.substr(0, bufByString.find('|'));
 
-        clientList.push_back(mail);
+        string param = bufByString.substr(bufByString.find('|') + 1);
 
-        string command = bufByString.substr(bufByString.find('|') + 1);
-        
-        if (command == "showOnline")
+        if (com == "connect")
         {
-            string onlineMails = "";
-
-            for (string m : clientList)
+            string senm = connectMail(param);
+            sendto(sock, senm.c_str(), BUFSIZE, 0, (sockaddr *)&client_addr, client_len);
+            continue;
+        }
+        else if (com == "show")
+        {
+            string senm = onlineListShow(param);
+            sendto(sock, senm.c_str(), BUFSIZE, 0, (sockaddr *)&client_addr, client_len);
+            continue;
+        }
+        else if (com == "chat")
+        {
+            while (true)
             {
-                if (m != mail)
+                char clientIP[256];
+                ZeroMemory(clientIP, 256);
+
+                inet_ntop(AF_INET, &client_addr.sin_addr, clientIP, 256);
+
+                cout << "Msg from " << clientIP << " : " << ntohs(client_addr.sin_port) << " $ " << buf << endl;
+
+                int sendResult = sendto(sock, buf, BUFSIZE, 0, (sockaddr *)&client_addr, client_len);
+                if (sendResult == SOCKET_ERROR)
                 {
-                    onlineMails += m + '|';
+                    cerr << "Can't send msg, Err #" << WSAGetLastError() << endl;
                 }
             }
         }
+        else
+            continue;
 
-        char clientIP[256];
-        ZeroMemory(clientIP, 256);
-
-        inet_ntop(AF_INET, &client_addr.sin_addr, clientIP, 256);
-
-        cout << "Msg from " << clientIP << " : " << ntohs(client_addr.sin_port) << " $ " << buf << endl;
-
-        int sendResult = sendto(sock, buf, BUFSIZE, 0, (sockaddr *)&client_addr, client_len);
-        if (sendResult == SOCKET_ERROR)
-        {
-            cerr << "Can't send msg, Err #" << WSAGetLastError() << endl;
-        }
     }
 
     cin.get();

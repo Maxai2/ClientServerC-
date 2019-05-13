@@ -6,12 +6,35 @@
 #include <iostream>
 #include <winsock2.h>
 #include <WS2tcpip.h>
+#include <list>
 
 #pragma comment(lib, "ws2_32.lib")
 using namespace std;
 
 #define BUFSIZE     1024 
 #define SERVER_PORT 54000
+
+list<string> splitString(string tempString)
+{
+    list<string> onlineList;
+
+    for (int i = 0; i < tempString.length(); i++)
+    {
+        string str = "";
+
+        for (int j = i; j < tempString.length(); j++, i++)
+        {
+            if (tempString[j] == '|')
+            {   
+                onlineList.push_back(str);
+                break;
+            }
+            str += tempString[j];
+        }
+    }
+
+    return onlineList;
+}
 
 int main(void)
 {
@@ -61,20 +84,46 @@ int main(void)
     }
 
     char buf[BUFSIZE];
-    string userInput;
+    string userInput, message;
     
     cout << "Input mail : ";
     string mail;
     getline(cin, mail);
 
-    cout << "\n\n";
+    message = "connect|" + mail;
 
-    string msg = mail + "|showOnline";
-
-    sendto(sock, msg.c_str(), BUFSIZE, 0, (sockaddr*)&server_addr, server_len);
+    sendto(sock, message.c_str(), BUFSIZE, 0, (sockaddr*)&server_addr, server_len);
 
     recvfrom(sock, buf, BUFSIZE, 0, (struct sockaddr*)&client_addr, &client_len);
 
+    cout << buf << endl << endl << "------------------------------------";
+
+    message = "show|" + mail;
+
+    sendto(sock, message.c_str(), BUFSIZE, 0, (sockaddr*)&server_addr, server_len);
+
+    recvfrom(sock, buf, BUFSIZE, 0, (struct sockaddr*)&client_addr, &client_len);
+    
+    list<string> userList = splitString(buf);
+
+    cout << "Online users: " << endl;
+    for (string u : userList)
+    {
+        cout << u << endl;
+    }
+
+    cout << "------------------------------------" << endl << endl;
+
+    cout << "Select user for start chat: ";
+    string chatUser;
+    getline(cin, chatUser);
+
+    message = "chat|" + mail + '|' + chatUser;
+
+    sendto(sock, message.c_str(), BUFSIZE, 0, (sockaddr*)&server_addr, server_len);
+
+    recvfrom(sock, buf, BUFSIZE, 0, (struct sockaddr*)&client_addr, &client_len);
+        
     do
     {
         cout << "> ";

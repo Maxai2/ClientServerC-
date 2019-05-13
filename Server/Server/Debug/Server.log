@@ -1,7 +1,4 @@
 ﻿  Server.cpp
-d:\ali\documents\visual studio 2017\projects\server_client_c++\server\server\server.cpp(72): error C2039: 'list': is not a member of 'std'
-  d:\program files\visual studio 2017\vc\tools\msvc\14.16.27023\include\string(20): note: see declaration of 'std'
-d:\ali\documents\visual studio 2017\projects\server_client_c++\server\server\server.cpp(72): error C2065: 'list': undeclared identifier
-d:\ali\documents\visual studio 2017\projects\server_client_c++\server\server\server.cpp(72): error C2275: 'std::string': illegal use of this type as an expression
-  d:\program files\visual studio 2017\vc\tools\msvc\14.16.27023\include\xstring(4373): note: see declaration of 'std::string'
-d:\ali\documents\visual studio 2017\projects\server_client_c++\server\server\server.cpp(72): error C2065: 'clientList': undeclared identifier
+LINK : warning LNK4044: unrecognized option '/lwsock32'; ignored
+LINK : warning LNK4044: unrecognized option '/lwsock32'; ignored
+  Server.vcxproj -> D:\Ali\Documents\Visual Studio 2017\Projects\Server_Client_C++\Server\Debug\Server.exe

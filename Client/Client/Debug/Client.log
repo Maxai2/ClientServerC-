@@ -1,2 +1,4 @@
 ﻿  Client.cpp
+d:\ali\documents\visual studio 2017\projects\server_client_c++\client\client\client.cpp(21): warning C4018: '<': signed/unsigned mismatch
+d:\ali\documents\visual studio 2017\projects\server_client_c++\client\client\client.cpp(25): warning C4018: '<': signed/unsigned mismatch
   Client.vcxproj -> D:\Ali\Documents\Visual Studio 2017\Projects\Server_Client_C++\Client\Debug\Client.exe
