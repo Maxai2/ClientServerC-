@@ -1,4 +1,67 @@
 ﻿  Server.cpp
-LINK : warning LNK4044: unrecognized option '/lwsock32'; ignored
-LINK : warning LNK4044: unrecognized option '/lwsock32'; ignored
-  Server.vcxproj -> D:\Ali\Documents\Visual Studio 2017\Projects\Server_Client_C++\Server\Debug\Server.exe
+d:\program files\visual studio 2017\vc\tools\msvc\14.16.27023\include\map(262): error C2535: 'std::pair<std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<_Ty>>>,bool> std::map<sockaddr &,int,std::less<_Kty>,std::allocator<_Ty>>::try_emplace(sockaddr &,_Mappedty &&...)': member function already defined or declared
+          with
+          [
+              _Ty=std::pair<sockaddr &,int>,
+              _Kty=sockaddr &
+          ]
+  d:\program files\visual studio 2017\vc\tools\msvc\14.16.27023\include\map(245): note: see declaration of 'std::map<sockaddr &,int,std::less<_Kty>,std::allocator<std::pair<_Kty,_Ty>>>::try_emplace'
+          with
+          [
+              _Kty=sockaddr &,
+              _Ty=int
+          ]
+  d:\ali\documents\visual studio 2017\projects\server_client_c++\server\server\server.cpp(21): note: see reference to class template instantiation 'std::map<sockaddr &,int,std::less<_Kty>,std::allocator<std::pair<_Kty,_Ty>>>' being compiled
+          with
+          [
+              _Kty=sockaddr &,
+              _Ty=int
+          ]
+d:\program files\visual studio 2017\vc\tools\msvc\14.16.27023\include\map(270): error C2535: 'std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<_Ty>>> std::map<sockaddr &,int,std::less<_Kty>,std::allocator<_Ty>>::try_emplace(std::_Tree_const_iterator<std::_Tree_val<std::_Tree_simple_types<_Ty>>>,sockaddr &,_Mappedty &&...)': member function already defined or declared
+          with
+          [
+              _Ty=std::pair<sockaddr &,int>,
+              _Kty=sockaddr &
+          ]
+  d:\program files\visual studio 2017\vc\tools\msvc\14.16.27023\include\map(252): note: see declaration of 'std::map<sockaddr &,int,std::less<_Kty>,std::allocator<std::pair<_Kty,_Ty>>>::try_emplace'
+          with
+          [
+              _Kty=sockaddr &,
+              _Ty=int
+          ]
+d:\program files\visual studio 2017\vc\tools\msvc\14.16.27023\include\map(315): error C2535: 'std::pair<std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<_Ty>>>,bool> std::map<sockaddr &,int,std::less<_Kty>,std::allocator<_Ty>>::insert_or_assign(sockaddr &,_Mappedty &&)': member function already defined or declared
+          with
+          [
+              _Ty=std::pair<sockaddr &,int>,
+              _Kty=sockaddr &
+          ]
+  d:\program files\visual studio 2017\vc\tools\msvc\14.16.27023\include\map(297): note: see declaration of 'std::map<sockaddr &,int,std::less<_Kty>,std::allocator<std::pair<_Kty,_Ty>>>::insert_or_assign'
+          with
+          [
+              _Kty=sockaddr &,
+              _Ty=int
+          ]
+d:\program files\visual studio 2017\vc\tools\msvc\14.16.27023\include\map(323): error C2535: 'std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<_Ty>>> std::map<sockaddr &,int,std::less<_Kty>,std::allocator<_Ty>>::insert_or_assign(std::_Tree_const_iterator<std::_Tree_val<std::_Tree_simple_types<_Ty>>>,sockaddr &,_Mappedty &&)': member function already defined or declared
+          with
+          [
+              _Ty=std::pair<sockaddr &,int>,
+              _Kty=sockaddr &
+          ]
+  d:\program files\visual studio 2017\vc\tools\msvc\14.16.27023\include\map(305): note: see declaration of 'std::map<sockaddr &,int,std::less<_Kty>,std::allocator<std::pair<_Kty,_Ty>>>::insert_or_assign'
+          with
+          [
+              _Kty=sockaddr &,
+              _Ty=int
+          ]
+d:\program files\visual studio 2017\vc\tools\msvc\14.16.27023\include\map(362): error C2535: 'int &std::map<sockaddr &,int,std::less<_Kty>,std::allocator<std::pair<_Kty,_Ty>>>::operator [](sockaddr &)': member function already defined or declared
+          with
+          [
+              _Kty=sockaddr &,
+              _Ty=int
+          ]
+  d:\program files\visual studio 2017\vc\tools\msvc\14.16.27023\include\map(197): note: see declaration of 'std::map<sockaddr &,int,std::less<_Kty>,std::allocator<std::pair<_Kty,_Ty>>>::operator []'
+          with
+          [
+              _Kty=sockaddr &,
+              _Ty=int
+          ]

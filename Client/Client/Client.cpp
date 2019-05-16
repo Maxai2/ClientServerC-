@@ -98,32 +98,101 @@ int main(void)
 
     cout << buf << endl << endl << "------------------------------------";
 
-    message = "show|" + mail;
-
-    sendto(sock, message.c_str(), BUFSIZE, 0, (sockaddr*)&server_addr, server_len);
-
-    recvfrom(sock, buf, BUFSIZE, 0, (struct sockaddr*)&client_addr, &client_len);
-    
-    list<string> userList = splitString(buf);
-
-    cout << "Online users: " << endl;
-    for (string u : userList)
+    while (true)
     {
-        cout << u << endl;
+        cout << endl << "1) show online" << endl;
+        cout << "2) send mail" << endl;
+        cout << "3) recieve" << endl;
+        cout << "Input choice: ";
+        short selNum;
+        cin >> selNum;
+
+        switch (selNum)
+        {
+            case 1:
+            {
+                message = "show|" + mail;
+
+                sendto(sock, message.c_str(), BUFSIZE, 0, (sockaddr*)&server_addr, server_len);
+
+                recvfrom(sock, buf, BUFSIZE, 0, (struct sockaddr*)&client_addr, &client_len);
+
+                if ((string)buf == "empty")
+                {
+                    cout << endl << "No user(s) online" << endl;
+                    continue;
+                }
+
+                list<string> userList = splitString(buf);
+
+                cout << endl << "Online users: " << endl;
+                for (string u : userList)
+                {
+                    cout << u << endl;
+                }
+
+                cout << "------------------------------------" << endl;
+            }
+                break;
+            case 2:
+            {
+                message = "show|" + mail;
+
+                sendto(sock, message.c_str(), BUFSIZE, 0, (sockaddr*)&server_addr, server_len);
+
+                recvfrom(sock, buf, BUFSIZE, 0, (struct sockaddr*)&client_addr, &client_len);
+
+                if ((string)buf == "empty")
+                {
+                    cout << endl << "No user(s) online" << endl;
+                    continue;
+                }
+
+                list<string> userList = splitString(buf);
+
+                cout << endl << "Online user(s): " << endl;
+                for (string u : userList)
+                {
+                    cout << u << endl;
+                }
+
+                cout << "------------------------------------" << endl << endl;
+
+                cin.ignore();
+                cout << "Write user mail to send: ";
+                string chatUser;
+                getline(cin, chatUser);
+
+                cout << "Text message: ";
+                string msg;
+                getline(cin, msg);
+
+                message = "send|" + chatUser + '~' + msg;
+
+                sendto(sock, message.c_str(), BUFSIZE, 0, (sockaddr*)&server_addr, server_len);
+
+                recvfrom(sock, buf, BUFSIZE, 0, (struct sockaddr*)&server_addr, &server_len);
+
+                cout << (string)buf << endl;
+            }
+                break;
+            case 3:
+            {
+                cout << endl << "Wait to recieve message > ";
+                recvfrom(sock, buf, BUFSIZE, 0, (struct sockaddr*)&server_addr, &server_len);
+
+                string bufstr = string(buf);
+
+                string from = bufstr.substr(0, bufstr.find('|'));
+                string msg = bufstr.substr(bufstr.find('|') + 1);
+
+                cout << endl << "From: " << from << endl;
+                cout << "Message: " << msg << endl;
+            }
+                break;
+        }
     }
-
-    cout << "------------------------------------" << endl << endl;
-
-    cout << "Select user for start chat: ";
-    string chatUser;
-    getline(cin, chatUser);
-
-    message = "chat|" + mail + '|' + chatUser;
-
-    sendto(sock, message.c_str(), BUFSIZE, 0, (sockaddr*)&server_addr, server_len);
-
-    recvfrom(sock, buf, BUFSIZE, 0, (struct sockaddr*)&client_addr, &client_len);
-        
+          
     do
     {
         cout << "> ";

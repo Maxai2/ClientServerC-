@@ -6,7 +6,7 @@
 #include <iostream>
 #include <winsock2.h>
 #include <WS2tcpip.h>
-#include <list>
+#include <map>
 
 #pragma comment(lib, "ws2_32.lib")
 using namespace std;
@@ -14,11 +14,14 @@ using namespace std;
 #define BUFSIZE     1024 
 #define SERVER_PORT 54000
 
-list<string> clientList;
+map<string, map<sockaddr &, int>> clientList;
 
-string connectMail(string mail)
+string connectMail(string mail, sockaddr clientAdr, int len)
 {
-    clientList.push_back(mail);
+    map<sockaddr &, int> info = { {clientAdr, len} };
+    
+    clientList[mail] = info;
+
     return "Connect";
 }
 
@@ -26,11 +29,11 @@ string onlineListShow(string selfMail)
 {
     string onlineMails = "";
 
-    for (string m : clientList)
+    for (const auto &m : clientList)
     {
-        if (m != selfMail)
+        if (m.first != selfMail)
         {
-            onlineMails += m + '|';
+            onlineMails += m.first + '|';
         }
     }
 
@@ -102,7 +105,7 @@ int main(void)
             cerr << "Error recieving from client" << WSAGetLastError() << endl;
             continue;
         }
-
+        
         string bufByString = string(buf);
 
         string com = bufByString.substr(0, bufByString.find('|'));
@@ -111,33 +114,35 @@ int main(void)
 
         if (com == "connect")
         {
-            string senm = connectMail(param);
+            auto fam = (struct sockaddr*)&client_addr;
+
+            string senm = connectMail(param, *fam, client_len);
             sendto(sock, senm.c_str(), BUFSIZE, 0, (sockaddr *)&client_addr, client_len);
             continue;
         }
         else if (com == "show")
         {
             string senm = onlineListShow(param);
+            if (senm == "")
+                senm = "empty";
             sendto(sock, senm.c_str(), BUFSIZE, 0, (sockaddr *)&client_addr, client_len);
             continue;
         }
-        else if (com == "chat")
+        else if (com == "send")
         {
-            while (true)
-            {
-                char clientIP[256];
-                ZeroMemory(clientIP, 256);
+            param = param.substr(0, param.find('~'));
 
-                inet_ntop(AF_INET, &client_addr.sin_addr, clientIP, 256);
+            string msg = param + '|' + bufByString.substr(bufByString.find('~') + 1);
 
-                cout << "Msg from " << clientIP << " : " << ntohs(client_addr.sin_port) << " $ " << buf << endl;
+            auto elem = clientList.find(param)->second;
+            sockaddr *adr = &elem.begin()->first;
+            int len = elem.begin()->second;
 
-                int sendResult = sendto(sock, buf, BUFSIZE, 0, (sockaddr *)&client_addr, client_len);
-                if (sendResult == SOCKET_ERROR)
-                {
-                    cerr << "Can't send msg, Err #" << WSAGetLastError() << endl;
-                }
-            }
+            sendto(sock, msg.c_str(), BUFSIZE, 0, adr, len);
+
+            string message = "Message delivered";
+
+            sendto(sock, message.c_str(), BUFSIZE, 0, (struct sockaddr*)&client_addr, client_len);
         }
         else
             continue;
