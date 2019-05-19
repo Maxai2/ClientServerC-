@@ -94,7 +94,7 @@ int main(void)
 
     sendto(sock, message.c_str(), BUFSIZE, 0, (sockaddr*)&server_addr, server_len);
 
-    recvfrom(sock, buf, BUFSIZE, 0, (struct sockaddr*)&client_addr, &client_len);
+    recvfrom(sock, buf, BUFSIZE, 0, (struct sockaddr*)&server_addr, &server_len);
 
     cout << buf << endl << endl << "------------------------------------";
 
@@ -115,7 +115,7 @@ int main(void)
 
                 sendto(sock, message.c_str(), BUFSIZE, 0, (sockaddr*)&server_addr, server_len);
 
-                recvfrom(sock, buf, BUFSIZE, 0, (struct sockaddr*)&client_addr, &client_len);
+                recvfrom(sock, buf, BUFSIZE, 0, (struct sockaddr*)&server_addr, &server_len);
 
                 if ((string)buf == "empty")
                 {
@@ -140,7 +140,7 @@ int main(void)
 
                 sendto(sock, message.c_str(), BUFSIZE, 0, (sockaddr*)&server_addr, server_len);
 
-                recvfrom(sock, buf, BUFSIZE, 0, (struct sockaddr*)&client_addr, &client_len);
+                recvfrom(sock, buf, BUFSIZE, 0, (struct sockaddr*)&server_addr, &server_len);
 
                 if ((string)buf == "empty")
                 {

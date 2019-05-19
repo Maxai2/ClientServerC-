@@ -14,11 +14,11 @@ using namespace std;
 #define BUFSIZE     1024 
 #define SERVER_PORT 54000
 
-map<string, map<sockaddr &, int>> clientList;
+map<string, map<sockaddr *, int>> clientList;
 
-string connectMail(string mail, sockaddr clientAdr, int len)
+string connectMail(string mail, sockaddr *clientAdr, int len)
 {
-    map<sockaddr &, int> info = { {clientAdr, len} };
+    map<sockaddr *, int> info = { {clientAdr, len} };
     
     clientList[mail] = info;
 
@@ -116,7 +116,7 @@ int main(void)
         {
             auto fam = (struct sockaddr*)&client_addr;
 
-            string senm = connectMail(param, *fam, client_len);
+            string senm = connectMail(param, fam, client_len);
             sendto(sock, senm.c_str(), BUFSIZE, 0, (sockaddr *)&client_addr, client_len);
             continue;
         }
@@ -135,7 +135,7 @@ int main(void)
             string msg = param + '|' + bufByString.substr(bufByString.find('~') + 1);
 
             auto elem = clientList.find(param)->second;
-            sockaddr *adr = &elem.begin()->first;
+            sockaddr *adr = elem.begin()->first;
             int len = elem.begin()->second;
 
             sendto(sock, msg.c_str(), BUFSIZE, 0, adr, len);
