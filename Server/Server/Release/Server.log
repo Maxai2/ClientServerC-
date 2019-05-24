@@ -1,0 +1,7 @@
+﻿  pch.cpp
+  Server.cpp
+LINK : warning LNK4044: unrecognized option '/lwsock32'; ignored
+  Generating code
+  All 403 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  Server.vcxproj -> D:\Ali\Documents\Visual Studio 2017\Projects\Server_Client_C++\Server\Release\Server.exe

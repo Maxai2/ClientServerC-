@@ -1,9 +1,10 @@
-﻿  Client.cpp
-d:\joker\documents\visual studio 2017\repos\clientserverc-\client\client\client.cpp(21): warning C4018: '<': signed/unsigned mismatch
-d:\joker\documents\visual studio 2017\repos\clientserverc-\client\client\client.cpp(25): warning C4018: '<': signed/unsigned mismatch
+﻿  pch.cpp
+  Client.cpp
+d:\ali\documents\visual studio 2017\projects\server_client_c++\client\client\client.cpp(21): warning C4018: '<': signed/unsigned mismatch
+d:\ali\documents\visual studio 2017\projects\server_client_c++\client\client\client.cpp(25): warning C4018: '<': signed/unsigned mismatch
   Generating code
-  1 of 209 functions ( 0.5%) were compiled, the rest were copied from previous compilation.
+  205 of 209 functions (98.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
-  Client.vcxproj -> D:\Joker\Documents\Visual Studio 2017\Repos\ClientServerC-\Client\Release\Client.exe
+  Client.vcxproj -> D:\Ali\Documents\Visual Studio 2017\Projects\Server_Client_C++\Client\Release\Client.exe

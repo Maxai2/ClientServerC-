@@ -1,1 +1,4 @@
-﻿  Server.vcxproj -> D:\Joker\Documents\Visual Studio 2017\Repos\ClientServerC-\Server\Debug\Server.exe
+﻿  Server.cpp
+LINK : warning LNK4044: unrecognized option '/lwsock32'; ignored
+LINK : warning LNK4044: unrecognized option '/lwsock32'; ignored
+  Server.vcxproj -> D:\Ali\Documents\Visual Studio 2017\Projects\Server_Client_C++\Server\Debug\Server.exe

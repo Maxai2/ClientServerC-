@@ -7,6 +7,8 @@
 #include <winsock2.h>
 #include <WS2tcpip.h>
 #include <map>
+#include <list>
+//#include <thread>
 
 #pragma comment(lib, "ws2_32.lib")
 using namespace std;
@@ -14,15 +16,13 @@ using namespace std;
 #define BUFSIZE     1024 
 #define SERVER_PORT 54000
 
-map<string, map<sockaddr *, int>> clientList;
+list<string> clientList;
 
-string connectMail(string mail, sockaddr *clientAdr, int len)
-{
-    map<sockaddr *, int> info = { {clientAdr, len} };
-    
-    clientList[mail] = info;
+map<string, string> sbw;
 
-    return "Connect";
+void connectMail(string mail)
+{   
+    clientList.push_back(mail);
 }
 
 string onlineListShow(string selfMail)
@@ -31,9 +31,9 @@ string onlineListShow(string selfMail)
 
     for (const auto &m : clientList)
     {
-        if (m.first != selfMail)
+        if (m != selfMail)
         {
-            onlineMails += m.first + '|';
+            onlineMails += m + '|';
         }
     }
 
@@ -80,6 +80,7 @@ int main(void)
     server_addr.sin_port = htons(SERVER_PORT);
     server_addr.sin_addr.S_un.S_addr = INADDR_ANY;
 
+    
     rc = bind(sock, (struct sockaddr*)&server_addr, server_len);
     if (rc == SOCKET_ERROR)
     {
@@ -107,6 +108,7 @@ int main(void)
         }
         
         string bufByString = string(buf);
+        cout << bufByString << endl;
 
         string com = bufByString.substr(0, bufByString.find('|'));
 
@@ -114,11 +116,10 @@ int main(void)
 
         if (com == "connect")
         {
-            auto fam = (struct sockaddr*)&client_addr;
+            connectMail(param);
 
-            string senm = connectMail(param, fam, client_len);
+            string senm = "Connect";
             sendto(sock, senm.c_str(), BUFSIZE, 0, (sockaddr *)&client_addr, client_len);
-            continue;
         }
         else if (com == "show")
         {
@@ -126,27 +127,23 @@ int main(void)
             if (senm == "")
                 senm = "empty";
             sendto(sock, senm.c_str(), BUFSIZE, 0, (sockaddr *)&client_addr, client_len);
-            continue;
         }
         else if (com == "send")
         {
-            param = param.substr(0, param.find('~'));
+            string mail = param.substr(0, param.find(':'));
 
-            string msg = param + '|' + bufByString.substr(bufByString.find('~') + 1);
+            string from = param.substr(0, param.find('~')).substr(param.find(':'));
 
-            auto elem = clientList.find(param)->second;
-            sockaddr *adr = elem.begin()->first;
-            int len = elem.begin()->second;
+            string msg = mail + '|' + from + '~' + param.substr(param.find('~') + 1);
 
-            sendto(sock, msg.c_str(), BUFSIZE, 0, adr, len);
-
-            string message = "Message delivered";
-
+            sbw[mail] += msg.c_str();
+        }
+        else if (com == "wait")
+        {
+            string message = sbw[param];
+            sbw[param] = "";
             sendto(sock, message.c_str(), BUFSIZE, 0, (struct sockaddr*)&client_addr, client_len);
         }
-        else
-            continue;
-
     }
 
     cin.get();

@@ -96,11 +96,10 @@ int main(void)
 
     recvfrom(sock, buf, BUFSIZE, 0, (struct sockaddr*)&server_addr, &server_len);
 
-    cout << buf << endl << endl << "------------------------------------";
-
     while (true)
     {
-        cout << endl << "1) show online" << endl;
+        cout << endl << "------------------------------------" << endl;
+        cout << "1) show online" << endl;
         cout << "2) send mail" << endl;
         cout << "3) recieve" << endl;
         cout << "Input choice: ";
@@ -130,8 +129,6 @@ int main(void)
                 {
                     cout << u << endl;
                 }
-
-                cout << "------------------------------------" << endl;
             }
                 break;
             case 2:
@@ -167,24 +164,30 @@ int main(void)
                 string msg;
                 getline(cin, msg);
 
-                message = "send|" + chatUser + '~' + msg;
+                message = "send|" + chatUser + ":" + mail + '~' + msg;
 
                 sendto(sock, message.c_str(), BUFSIZE, 0, (sockaddr*)&server_addr, server_len);
-
-                recvfrom(sock, buf, BUFSIZE, 0, (struct sockaddr*)&server_addr, &server_len);
-
-                cout << (string)buf << endl;
             }
                 break;
             case 3:
-            {
+            {   
+                string bufstr = "";
+                string from, msg;
                 cout << endl << "Wait to recieve message > ";
-                recvfrom(sock, buf, BUFSIZE, 0, (struct sockaddr*)&server_addr, &server_len);
 
-                string bufstr = string(buf);
+                message = "wait|" + mail;
 
-                string from = bufstr.substr(0, bufstr.find('|'));
-                string msg = bufstr.substr(bufstr.find('|') + 1);
+                do 
+                {
+                    sendto(sock, message.c_str(), BUFSIZE, 0, (sockaddr*)&server_addr, server_len);
+                    recvfrom(sock, buf, BUFSIZE, 0, (struct sockaddr*)&server_addr, &server_len);
+
+                } while (bufstr.length() < 0);
+
+                bufstr = string(buf);
+
+                from = bufstr.substr(bufstr.find('~')).substr(bufstr.find('|'));
+                msg = bufstr.substr(bufstr.find('~') + 1);
 
                 cout << endl << "From: " << from << endl;
                 cout << "Message: " << msg << endl;
@@ -192,23 +195,6 @@ int main(void)
                 break;
         }
     }
-          
-    do
-    {
-        cout << "> ";
-        getline(cin, userInput);
-
-        if (userInput.size() > 0)
-        {
-            int sendResult = sendto(sock, userInput.c_str(), BUFSIZE, 0, (sockaddr*)&server_addr, server_len);
-            if (sendResult == SOCKET_ERROR)
-            {
-                cerr << "Can't send msg, Err #" << WSAGetLastError() << endl;
-                cin.get();
-                return 0;
-            }
-        }
-    } while (userInput.size() > 0);
 
     cin.get();
     closesocket(sock);
