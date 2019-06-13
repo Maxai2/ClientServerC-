@@ -177,7 +177,7 @@ int main(void)
 
                 message = "wait|" + mail;
 
-                do 
+                do
                 {
                     sendto(sock, message.c_str(), BUFSIZE, 0, (sockaddr*)&server_addr, server_len);
                     recvfrom(sock, buf, BUFSIZE, 0, (struct sockaddr*)&server_addr, &server_len);
@@ -186,7 +186,7 @@ int main(void)
 
                 bufstr = string(buf);
 
-                from = bufstr.substr(bufstr.find('~')).substr(bufstr.find('|'));
+                from = bufstr.substr(0, bufstr.find('~')).substr(bufstr.find('|') + 1);
                 msg = bufstr.substr(bufstr.find('~') + 1);
 
                 cout << endl << "From: " << from << endl;

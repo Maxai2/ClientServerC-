@@ -1,4 +1,3 @@
 ﻿  Server.cpp
-LINK : warning LNK4044: unrecognized option '/lwsock32'; ignored
-LINK : warning LNK4044: unrecognized option '/lwsock32'; ignored
-  Server.vcxproj -> D:\Ali\Documents\Visual Studio 2017\Projects\Server_Client_C++\Server\Debug\Server.exe
+d:\ali\documents\visual studio 2017\projects\server_client_c++\server\server\server.cpp(84): error C2440: '=': cannot convert from 'std::_Binder<std::_Unforced,SOCKET &,sockaddr *,int &>' to 'int'
+  d:\ali\documents\visual studio 2017\projects\server_client_c++\server\server\server.cpp(84): note: No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called

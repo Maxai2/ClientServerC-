@@ -8,7 +8,7 @@
 #include <WS2tcpip.h>
 #include <map>
 #include <list>
-//#include <thread>
+#include <thread>
 
 #pragma comment(lib, "ws2_32.lib")
 using namespace std;
@@ -80,7 +80,6 @@ int main(void)
     server_addr.sin_port = htons(SERVER_PORT);
     server_addr.sin_addr.S_un.S_addr = INADDR_ANY;
 
-    
     rc = bind(sock, (struct sockaddr*)&server_addr, server_len);
     if (rc == SOCKET_ERROR)
     {
@@ -132,7 +131,7 @@ int main(void)
         {
             string mail = param.substr(0, param.find(':'));
 
-            string from = param.substr(0, param.find('~')).substr(param.find(':'));
+            string from = param.substr(0, param.find('~')).substr(param.find(':') + 1);
 
             string msg = mail + '|' + from + '~' + param.substr(param.find('~') + 1);
 
